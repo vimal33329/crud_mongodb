@@ -7,7 +7,7 @@
     "test": "node src/app.js"
   },
   "author": "Christian Ramos",
-  "license": "ISC",
+  "license": "MIT",
   "dependencies": {
     "body-parser": "^1.19.0",
     "ejs": "^2.6.1",
