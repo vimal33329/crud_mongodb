@@ -8,7 +8,7 @@ const app = express();
 const indexRoutes = require('./routes/index');
 
 // AJUSTES
-app.set('port', 5000);
+app.set('port', 3000);
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
 
