@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title><%= titulo %></title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+</head>
+<body>
+
+    <div class="container">
+        <br>
+    <div class="jumbotron">
+        <h1><%= titulo %></h1>
+
+        <form action="/add" method="POST">
+            <legend>Agregar una tarea</legend>
+            <div class="form-group">
+                <input type="text" placeholder="Título" id="titulo" class="form-control" name="titulo">
+            </div>
+            <div class="form-group">
+                <textarea placeholder="Descripción" class="form-control" name="descripcion" rows="1" cols="80"></textarea>
+            </div>
+            <button class="btn btn-primary">Agregar</button>
+        </form>
+        </div>
+
+        <table class="table table-bordered table-hover">
+            <thead>
+                <tr>
+                    <th>#</th>
+                    <th>Título</th>
+                    <th>Descripción</th>
+                    <th>Operaciones</th>
+                </tr>
+            </thead>
+            <tbody>
+                <% for(var i=0; i < tareas.length; i++){ %>
+                <tr>
+                    <td><%= i+1 %></td>
+                    <td><strong><%= tareas[i].titulo %></strong></td>
+                    <td><strong><%= tareas[i].descripcion %></strong></td>
+                    <td>
+                        <a class="<%= tareas[i].status ? 'btn btn-success': 'btn btn-dark' %>" href="/hecho/<%= tareas[i]._id %>">Hecho</a>
+                        <a id="eliminar" class="btn btn-danger" href="/eliminar/<%= tareas[i]._id %>">Eliminar</a>
+                    </td>
+                </tr>
+                <% } %>
+            </tbody>
+        </table>
+    </div>
+    
+</body>
+<script>
+    document.getElementById('titulo').focus();
+    document.getElementById('eliminar').addEventListener('click', (e)=>{
+        let response = confirm('¿Estás seguro que quieres eliminar esta tarea?');
+        if(!response){
+            e.preventDefault();
+        }
+    });
+</script>
+</html>
