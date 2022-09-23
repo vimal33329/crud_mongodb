@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title><%= title %></title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+</head>
+<body>
+
+    <div class="container">
+        <br>
+    <div class="jumbotron">
+        <h1><%= title %></h1>
+
+        <form action="/add" method="POST">
+            <legend>ADD TASK AREA</legend>
+            <div class="form-group">
+                <input type="text" placeholder="Título" id="titulo" class="form-control" name="titulo">
+            </div>
+            <div class="form-group">
+                <textarea placeholder="Descripción" class="form-control" name="descripcion" rows="1" cols="80"></textarea>
+            </div>
+            <button class="btn btn-primary">ADD</button>
+        </form>
+        </div>
+
+        <table class="table table-bordered table-hover">
+            <thead>
+                <tr>
+                    <th>Title</th>
+                    <th>Descripcion</th>
+                    <th>Status</th>
+                </tr>
+            </thead>
+            <tbody id = "data_details" >
+            </tbody>
+        </table>
+    </div>
+    
+</body>
+<script src="js/jquery.js" ></script>
+<script>
+
+$(document).ready(function(){ 
+let data_url = `/task`;
+
+// LOAD USER DATA
+load_data = () => {
+let table_body;
+$.post(data_url, { swtch:"getData"  }, 
+function(data, status){
+$.each(data, function(key, dt) {
+table_body += '<tr>';
+table_body += '<td>'+dt.title+'</td>';
+table_body += '<td>'+dt.descripcion+'</td>';
+table_body += '<td>'+dt.status+'</td>';
+table_body += '</tr>';
+});
+$("#data_details").html(table_body);
+});	
+}
+load_data();
+
+$('#data_details').on( 'click','.del_user', function () {
+console.log($(this).data('id')); 
+$.post(data_url, { swtch:'del_user',uid:$(this).data('id') }, 
+function(data, status){
+});	
+});	
+
+$('#data_details').on( 'click','.allow_per', function () {
+console.log($(this).data('id')); 
+$.post(data_url, { swtch:'allow_per',uid:$(this).data('id'), access:$(this).data('access')  }, 
+function(data, status){
+console.log(data); load_data("");
+});	
+});	
+
+
+});
+</script>
+</html>

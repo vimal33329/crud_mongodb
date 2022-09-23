@@ -1,3 +1,4 @@
+require("dotenv").config();
 const path = require('path');
 const express = require('express');
 const logger = require('morgan');
@@ -5,12 +6,14 @@ const bodyParser = require('body-parser');
 
 const app = express();
 
-const indexRoutes = require('./routes/index');
+const indexRoutes = require('./src/routes/index');
 
 // AJUSTES
-app.set('port', 3000);
-app.set('views', path.join(__dirname, 'views'));
+app.set('port', process.env.PORT);
+app.set('views', path.join(__dirname, 'src/views'));
 app.set('view engine', 'ejs');
+
+app.use(express.static("./public"));
 
 // MIDDLEWARES
 app.use(logger('dev'));

@@ -1,11 +1,15 @@
-# CRUD-mongodb-express-ejs
-**CRUD (Crear, Leer, Actualizar y Borrar)** mongodb, express y ejs
-
-### Use and installation
+### installation
 
 Install modules: `npm install`
+Rename .env_example to .env
+and add local mongodb url for db connection..
+
 Start: `node app.js`
 
-RUN in: **127.0.0.1:3000**
+If you have nodemon 
+start development server with : `npm run dev`
+or use node `npm run start`
 
-![screenshot](https://raw.githubusercontent.com/christivn/CRUD-mongodb-express-ejs/master/screenshot.png)
+
+RUN in: **127.0.0.1:3000**
+or your custom post number based on .env file

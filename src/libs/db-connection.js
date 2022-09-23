@@ -1,11 +1,12 @@
 const mongoose = require('mongoose');
 
 let db;
+console.log(process.env.DB_URL);
 
 module.exports = function connection(){
     if(!db){
-        db = mongoose.createConnection('mongodb://localhost/crud-example', {
-            useNewUrlParser: true
+        db = mongoose.createConnection(process.env.DB_URL, {
+            useNewUrlParser: true, useCreateIndex: true, useUnifiedTopology: true
         });
     }
 

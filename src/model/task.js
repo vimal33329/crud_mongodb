@@ -2,12 +2,12 @@ module.exports = function(){
     var db = require('../libs/db-connection')();
     var Schema = require('mongoose').Schema;
 
-    var tareas = Schema({
-        titulo: String,
+    var task = Schema({
+        title: String,
         descripcion: String,
         status: Boolean
     });
 
-    return db.model('tareas', tareas);
+    return db.model('task', task);
 
 }
