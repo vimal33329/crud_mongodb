@@ -34,11 +34,11 @@ router.post('/task', async (req, res)=>{
 	}
 	
 	if(req.body.swtch == 'updateData'){
-		let id = req.body.data_id;
-		delete req.body.swtch,req.body.data_id;
-    model.findById(id, (err, task)=>{
+		let uid = req.body.data_id;
+		model.findById(uid, (err, task)=>{
         if(err){console.log(err);}
-        task=req.body;
+        task.title=req.body.title;
+		task.description=req.body.description; console.log(task);
         task.save().then(()=> {return res.status(200).json("Updated").end()})
     });
 	}

@@ -4,7 +4,7 @@ module.exports = function(){
 
     var task = Schema({
         title: String,
-        descripcion: String,
+        description: String,
         status: Boolean
     });
 
