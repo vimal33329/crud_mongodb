@@ -38,15 +38,19 @@ router.post('/task', async (req, res)=>{
 	}
 	
 	if(req.body.swtch == 'addData'){
-	const task = await model.find({}).exec();
-    if (task) { return res.status(200).json(task).end(); } 
-	else { return res.status(404).json({ error: 'No data Found' }); }
+	delete req.body.swtch,req.body.data_id; 
+    model.create(req.body, (err, task)=>{
+        if(err){console.log(err);}
+    return res.status(200).json("added").end()
+    })
 	}
 	
 	if(req.body.swtch == 'updateData'){
-    model.findById(req.body.id, (err, task)=>{
+		let id = req.body.data_id;
+		delete req.body.swtch,req.body.data_id;
+    model.findById(id, (err, task)=>{
         if(err){console.log(err);}
-        task.status=!task.status;
+        task=req.body;
         task.save().then(()=> {return res.status(200).json("Updated").end()})
     });
 	}
@@ -60,7 +64,7 @@ router.post('/task', async (req, res)=>{
 	}	
 	
 	if(req.body.swtch == 'del_task'){
-	    model.remove({_id: req.body.uid}, (err, task)=>{
+	    model.remove({_id: req.body.data_id}, (err, task)=>{
 		if(err){return res.status(404).json({ error: 'cannot perform delete'+err })}
         return res.status(200).json("Deleted ").end();
 		});

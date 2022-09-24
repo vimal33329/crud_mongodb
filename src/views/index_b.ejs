@@ -11,22 +11,13 @@
 <body>
 
     <div class="container">
-        <br>
-    <div class="jumbotron">
-        <h1><%= title %></h1>
-
-        <form action="/add" method="POST">
-            <legend>ADD TASK AREA</legend>
-            <div class="form-group">
-                <input type="text" placeholder="title" id="title" class="form-control" name="title">
-            </div>
-            <div class="form-group">
-                <textarea placeholder="Descripción" class="form-control" name="descripcion" rows="1" cols="80"></textarea>
-            </div>
-            <button class="btn btn-primary">ADD</button>
-        </form>
-        </div>
-		<button class="btn btn-sm btn-outline-dark float-right" id = "add_task" ><i class="bi bi-clipboard-plus mr-1"></i>ADD</button>
+	<div class = "col-md-12 p-3 text-center bg-info ">
+	<div class = "row">
+	<strong class = "col-md-12" >CRUD</strong>
+	<button class="col-md-2 btn btn-sm btn-outline-dark " id = "add_task" ><i class="bi bi-clipboard-plus mr-2"></i>ADD</button>
+	</div>
+	</div>
+		
         <table class="table table-bordered table-hover">
             <thead>
                 <tr>
@@ -55,15 +46,20 @@
   <div class="modal-body p-5">
   <div class="form-group">
     <label for="exampleInputEmail1">Task Name</label>
-    <input type="text" class="form-control" name = "t_task_name" aria-describedby="Task name" placeholder="Task name">
+    <input type="text" class="form-control" name = "t_task_title" aria-describedby="Task name" placeholder="Title">
   </div>
+  
+  <div class="form-group">
+    <label for="exampleInputEmail1">Task Descripcion</label>
+    <textarea  type="text" class="form-control" name = "t_task_descripcion" aria-describedby="Task Descripcion" placeholder="Descripcion"></textarea>
+  </div>  
   
       </div>
   
       <div class="modal-footer">
 		<input hidden id = "action" value = "" >
-		<input hidden id = "task_id" value = "" >
-		<button type="submit" class="btn btn-sm btn-outline-success task_submit_data" data-dismiss="modal">Submit</button>
+		<input hidden id = "data_id" value = "" >
+		<button type="button" class="btn btn-sm btn-outline-success _submit_data" data-dismiss="modal">Submit</button>
         <button type="button" class="btn btn-sm btn-outline-secondary" data-bs-dismiss="modal" >Close</button>
       </div>
 </form>  	  
@@ -72,15 +68,13 @@
 </div>	
 
 <!-- Modal delete task-->
-<div class="modal fade" id="DeleteModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+<div class="modal fade" id="DeleteModal" tabindex="-1" role="dialog"  aria-hidden="true">
   <div class="modal-dialog border border-danger" role="document">
     <div class="modal-content">
       <div class="modal-header bg-danger">
-        <h5 class="modal-title" id="exampleModalLabel"></h5>
+        <h5 class="modal-title" ></h5>
 		<input hidden id = "selected_node" value = "" >
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
 	  
 	<div class="modal-body p-5">
@@ -90,7 +84,7 @@
   
       <div class="modal-footer">
 		<button type="submit" class="btn btn-sm btn-outline-danger confirm_delete" data-dismiss="modal">DELETE</button>
-        <button type="button" class="btn btn-sm btn-outline-secondary" data-dismiss="modal">CLOSE</button>
+        <button type="button" class="btn btn-sm btn-outline-secondary" data-bs-dismiss="modal" >Close</button>
       </div>
 	  
     </div>
@@ -108,11 +102,6 @@
 
 $(document).ready(function(){ 
 let data_url = `/task`;
-let data_modal = bootstrap.Modal.getOrCreateInstance(document.getElementById('DataModal')) // Returns a Bootstrap modal instance
-// Show or hide:
-//data_modal.show();
-//data_modal.hide();
-// Table action icons
 let del = '<i style = "color:red;" class="bi bi-trash"></i>';
 let edit = '<i style = "color:green;" class="bi bi-pencil"></i>';
 let icon_t = '<i style = "color:green;" class="bi bi-toggle-on"></i>';
@@ -129,7 +118,7 @@ table_body += '<tr>';
 table_body += '<td><strong>'+dt.title+'</strong></td>';
 table_body += '<td>'+dt.descripcion+'</td>';
 table_body += '<td><button data-id = '+dt._id+' data-access = '+dt.status+' class = "btn rud change_status" >'+icon+'</button></td>';
-var action = '<td><button class = "btn btn-sm btn-outline-dark m-2" data-id = '+dt._id+' class = "edit_user" >'+edit+'</button>';
+var action = '<td><button class = "btn btn-sm btn-outline-dark data_edit m-2" data-id = '+dt._id+' data-title = "'+dt.title+'" data-descripcion = "'+dt.descripcion+'" >'+edit+'</button>';
 action += '<button class = "btn btn-sm btn-outline-dark del_task" data-id = '+dt._id+' >'+del+'</button>';
 action += '</td>';
 table_body += action;
@@ -144,25 +133,47 @@ load_data();
 
 $('#add_task').on( 'click', function () {
 $('#data_form')[0].reset();		
-$('.modal-title').html('ADD TASK DATA');
-$('#action').val('add_teacher_task');
-//$('#DataModal').modal('show');
-data_modal.show();
+$('.modal-title').html('ADD DATA');
+$('#action').val('addData');
+$('#DataModal').modal('show');
+//data_modal.show();
 });
 
-$('#data_details').on( 'click','.del_task', function () {
-console.log($(this).data('id')); 
-$.post(data_url, { swtch:'del_task',uid:$(this).data('id') }, 
-function(data, status){ load_data();
-});	
+$('#data_details').on( 'click','.data_edit', function () {
+$("input[name='t_task_title']").val($(this).data('title'));
+$("textarea[name='t_task_descripcion']").val($(this).data('descripcion'));
+$('.modal-title').html('EDIT DATA');
+$('#DataModal').modal('show');
+$('#data_id').val($(this).data('id'));
+$('#action').val('updateData');
 });	
 
+$('#data_details').on( 'click','.del_task', function () {	
+$('#DeleteModal').modal('show');
+$('#data_id').val($(this).data('id'));
+$('#action').val('del_task');
+});
+
 $('#data_details').on( 'click','.change_status', function () {
-console.log($(this).data('id')); 
 $.post(data_url, { swtch:'change_status',uid:$(this).data('id'), access:$(this).data('access')  }, 
 function(data, status){ load_data();
 });	
 });	
+
+
+
+$('._submit_data,.confirm_delete').on( 'click', function () {
+$.post(data_url, { 
+title : $("input[name='t_task_title']").val(), 
+descripcion : $("textarea[name='t_task_descripcion']").val(), 
+swtch : $("#action").val(), 
+data_id : $("#data_id").val()  
+}, function(data, status){
+$('#data_form')[0].reset();
+$('#DataModal,#DeleteModal').modal('hide');
+load_data();
+});	
+});
 
 
 });
