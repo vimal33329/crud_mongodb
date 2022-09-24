@@ -15,18 +15,6 @@ router.get('/', (req, res)=>{
     });
 });
 
-router.get('/test', (req, res)=>{
-    model.find({}, (err, task)=>{
-        if(err){console.log(err);}
-
-        res.render('index_b', {
-            title: 'CRUD MongoDB',
-            task: task
-        });
-
-    });
-});
-
 
 router.post('/task', async (req, res)=>{
     let body = req.body;
@@ -70,34 +58,6 @@ router.post('/task', async (req, res)=>{
 		});
 	}	
 	
-});
-
-router.post('/add', (req, res)=>{
-    let body = req.body;
-    body.status = false;
-
-    model.create(body, (err, task)=>{
-        if(err){console.log(err);}
-        res.redirect('/');
-    });
-});
-
-router.get('/hecho/:id', (req,res)=>{
-    let id = req.params.id;
-    model.findById(id, (err, task)=>{
-        if(err){console.log(err);}
-        task.status=!task.status;
-        task.save()
-            .then(()=> res.redirect('/'))
-    });
-});
-
-router.get('/eliminar/:id', (req,res)=>{
-    let id = req.params.id;
-    model.remove({_id: id}, (err, task)=>{
-        if(err){console.log(err);}
-        res.redirect('/');
-    });
 });
 
 module.exports = router;
