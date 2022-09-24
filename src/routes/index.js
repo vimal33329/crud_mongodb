@@ -49,10 +49,18 @@ router.post('/task', async (req, res)=>{
         task.status=!task.status;
         task.save().then(()=> {return res.status(200).json("Updated").end()})
     });
+	}
+
+	if(req.body.swtch == 'change_status'){
+    model.findById(req.body.uid, (err, task)=>{ 
+        if(err){console.log(err);}
+        task.status=!task.status;
+        task.save().then(()=> {return res.status(200).json("Updated").end()})
+    });
 	}	
 	
-	if(req.body.swtch == 'deleteData'){
-	    model.remove({_id: req.body.id}, (err, task)=>{
+	if(req.body.swtch == 'del_task'){
+	    model.remove({_id: req.body.uid}, (err, task)=>{
 		if(err){return res.status(404).json({ error: 'cannot perform delete'+err })}
         return res.status(200).json("Deleted ").end();
 		});
